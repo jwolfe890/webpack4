@@ -7,7 +7,8 @@ module.exports = {
   },
   mode: "development",
   output: {
-    filename: "[name]-bundle.js",
+    // content hashing is used here to prevent browsers from cachine the bunlde build
+    filename: "main.[contentHash].js",
     path: path.resolve(__dirname, "dist")
   },
   plugins: [
@@ -19,14 +20,7 @@ module.exports = {
     rules: [
       {
         test: /\.css$/,
-        use: [
-          {
-            loader: "style-loader"
-          },
-          {
-            loader: "css-loader"
-          }
-        ]
+        use: ["style-loader", "css-loader"]
       },
       {
         test: /\.html$/,
