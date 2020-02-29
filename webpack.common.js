@@ -4,24 +4,16 @@ var HtmlWebpackPlugin = require("html-webpack-plugin");
 module.exports = {
   // neither the dev or production builds have a content hash
   entry: {
-    main: "./src/main.js"
+    main: "./src/main.js",
+    vendor: "./src/vendor.js"
   },
   output: {
     // content hashing is used here to prevent browsers from cachine the bunlde build
     filename: "main.[contentHash].js",
     path: path.resolve(__dirname, "dist")
   },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: "./src/index.html"
-    })
-  ],
   module: {
     rules: [
-      {
-        test: /\.css$/,
-        use: ["style-loader", "css-loader"]
-      },
       {
         test: /\.html$/,
         use: ["html-loader"]
