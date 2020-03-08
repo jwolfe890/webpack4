@@ -1,0 +1,44 @@
+1. Handling html and its linked JavaScript file is accomplishable in webpack through the html-loader. This is configured in the modules section. 
+
+Additionally, webpack needs the html webpack plugin. This is configured in the plugins section and links to the html file in the src folder. 
+
+
+2. While html-loader might work for basic JavaScript, babel-loader is necessary to read es6 JavaScript files. Implementing Babel loader begins with installing babel-loader and I think babel-core. It’s needed to run es6 on IE11. 
+
+Babel core/ babel loader / babel-preset env 
+
+
+3. configuring images is easy and only requires adding file loader. It’s possible to specify they be output to a specific file. 
+
+
+4. mode can be either production or development. Development contains un-minimized files in the dist folder I believe. 
+
+
+5. content hash. A content hash is hash that is used for the output file name. this hash is important because browsers will typically cache the main js file so that even if the code is changed and rebuilt, people’s machine will save the old code. 
+
+Content hashing occurs through adding a name in brackets [ ].
+
+For example, the content hash in the output file is:
+
+  output: {
+    // content hashing is used here to prevent browsers from cachine the bunlde build
+    filename: "main.[contentHash].js",
+    path: path.resolve(__dirname, "dist")
+  },
+
+The result is a dynamic content hash in the dist folder. Currently, it is 
+
+main.84af1a9368c4ad84e2fb.js
+
+However, since a new hash name is dynamically generated now, this creates an issue because the index.html file that is built and linked to the dist/main.js version of the js will no longer know which file to link to. Using html-webpack-plugin solves this issue. 
+
+It’s necessary to use the webpack-clean plugin to make sure that multiple main file hashes aren’t created on subsequent builds 
+
+
+6. it’s possible to have multiple builds that share information between each other. For example, there could be a common build. The production and development build would then share elements from the common build. 
+
+However, in order to do this, it’s necessary to merge the files with a webpack plugin called webpack-merge.  
+
+7. the MiniCssExtractPlugin is necessary to remove the CSS to a separate file. This approach is necessary to achieve faster css page loading. 
+
+8. the optimizecssassetsplugin will then minimize this css. However, when this plugin is introduced it overrides the default javascript plugin minimizer. Because of this it’s necessary to use the terserplugin to restore these elements.  
